@@ -1,1 +1,2 @@
-18.12 2h get-request liquipediaan: tulevat turnaukset
+17.12 2h get-request liquipediaan: tulevat turnaukset
+18.12 2h get-requestin jatkoa + skannausten aikatauluttamisen toiminnallisuutta
