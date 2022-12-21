@@ -25,4 +25,4 @@ const findAvailableTimeSlot = (cronTime) => {
     return findAvailableTimeSlot(nextTimeSlot)
 }
 
-module.exports = schedule
+module.exports = { schedule }
