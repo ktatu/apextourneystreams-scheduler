@@ -1,2 +1,3 @@
-17.12 2h get-request liquipediaan: tulevat turnaukset
-18.12 2h get-requestin jatkoa + skannausten aikatauluttamisen toiminnallisuutta
+17.12 2h get-pyyntö liquipediaan: tulevat turnaukset
+18.12 2h get-pyynnön jatkoa + skannausten aikatauluttamisen toiminnallisuutta
+19.12 2h get-pyynnön parametrien serialisointi. Ei committia, jäi tekemättä

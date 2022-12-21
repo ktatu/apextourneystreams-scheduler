@@ -1,21 +1,27 @@
 const axios = require("axios")
 
-const LIQUIPEDIA_API_URL = "https://liquipedia.net/apexlegends/api.php"
+const LIQUIPEDIA_API_BASEURL = "https://liquipedia.net/apexlegends/api.php"
 
-axios.interceptors.request.use(request => {
-    //console.log('Starting Request', JSON.stringify(request, null, 2))
-    return request
-  })
+/*
+axios.interceptors.response.use(response => {
+    const requestUrl = response.config.url
 
+    //console.log(response.data)
+    if (requestUrl.includes("liquipedia")) {
+        response.data = response.data.query.results
+    }
+
+    return response
+})
+*/
+// TODO: paramsSerializer if spare time
 const upcomingTournamentRequestCfg = { 
     params: {
         action: "askargs",
         format: "json",
-        conditions: "has exact time::True|has map date::>2022-12-18|has tournament name::+",
+        conditions: "has exact time::True|has map date::>2022-12-19|has tournament name::+",
         printouts: "has tournament name|has map date",
-        sort: "has map date",
-        order: "asc",
-        limit: "5"
+        parameters: "limit=500|sort=has tournament name|order=asc"
     },
     headers: {
         "User-Agent": "ApexTourneyStreams, discord Tatu#0700",
@@ -23,18 +29,23 @@ const upcomingTournamentRequestCfg = {
     }
 }
 
+// const response = await axios.get(LIQUIPEDIA_API_BASEURL, upcomingTournamentRequestCfg, { paramsSerializer: (params) => serializer.stringify(params) })
+
 const getUpcomingTournaments = async () => {
-    const request = await axios.get(LIQUIPEDIA_API_URL, upcomingTournamentRequestCfg)
+    const response = await axios.get(LIQUIPEDIA_API_BASEURL, upcomingTournamentRequestCfg)
 
-    const results = request.data.query.results
-
-    Object.entries(results).forEach(
-        ([key, value]) => {
-            console.log(value["printouts"]["has tournament name"])
-        }
-    )
+    const results = response.data
 
     //console.log(results)
+
+    /*
+    Object.entries(results).forEach(
+        ([key, value]) => {
+        }
+    )
+    */
+
+    console.log(results)
 
     //return request.data
 }
@@ -47,21 +58,39 @@ module.exports = {
     getUpcomingTournaments
 }
 
+/*
 
+    params: {
+        action: "askargs",
+        format: "json",
+        conditions: "has exact time::True|has map date::>2022-12-19|has tournament name::+",
+        printouts: "has tournament name|has map date",
+        parameters: "limit=5|sort=has tournament name|order=asc"
+    },
+*/
 
-    /*
-    const req = await axios({
-        method: "get",
-        url: LIQUIPEDIA_API_URL,
-        params: {
-            action: "askargs",
-            format: "json",
-            conditions: "has exact time::True|has map date::>2022-12-18|has tournament name::+",
-            printouts: "has tournament name"
+/*
+    params: {
+        action: "askargs",
+        format: "json",
+        conditions: {
+            "has exact time": "True",
+            "has map date": ">2022-12-19",
+            "has tournament name": "+"
         },
-        headers: {
-            "User-Agent": "ApexTourneyStreams, discord Tatu#0700",
-            "Accept-Encoding": "gzip"
+        printouts: [
+            "has tournament name",
+            "has map date"
+        ],
+        parameters: {
+            "limit": 5,
+            "sort": "has tournament name",
+            "order": "asc"
         }
-    })
-    */
+    },
+
+    ,
+    paramsSerializer: params => {
+        serializer.stringify(params)
+    }
+*/
