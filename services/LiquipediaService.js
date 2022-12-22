@@ -1,4 +1,5 @@
 const axios = require("axios")
+const get = require("lodash.get")
 
 const LIQUIPEDIA_API_URL = "https://liquipedia.net/apexlegends/api.php"
 
@@ -11,7 +12,16 @@ const LiquipediaService = axios.create({
 
 
 LiquipediaService.interceptors.response.use(response => {
-    response.data = response.data.query.results
+    const queryResults = response.data.query.results
+    const keys = Object.keys(queryResults)
+
+    const printoutArray = keys.reduce((array, key) => {
+        const printout = get(queryResults, `${key}.printouts`)
+
+        return array.concat(printout)
+    }, [])
+
+    response.data = printoutArray
 
     return response
 })
@@ -22,7 +32,7 @@ const getUpcomingTournaments = async () => {
         params: {
             action: "askargs",
             format: "json",
-            conditions: "has exact time::True|has map date::>2022-12-19|has tournament name::+",
+            conditions: `has exact time::True|has map date::>${getCurrentDate()}|has tournament name::+`,
             printouts: "has tournament name|has map date",
             parameters: "limit=5|sort=has tournament name|order=asc"
         }
@@ -31,6 +41,13 @@ const getUpcomingTournaments = async () => {
     const response = await LiquipediaService.get(LIQUIPEDIA_API_URL, upcomingTournamentRequestCfg)
 
     return response.data
+}
+
+// year-month-dayOfMonth
+const getCurrentDate = () => {
+    const currentDate = new Date()
+
+    return currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
 }
 
 module.exports = {

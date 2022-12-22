@@ -1,5 +1,5 @@
 const scheduler = require("node-schedule")
-const addFiveMinutes = require("./utils/cron_time")
+const addFiveMinutes = require("./utils/TimeManipulation")
 
 const scheduledTimeSlots = []
 
