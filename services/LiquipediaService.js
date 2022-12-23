@@ -26,8 +26,7 @@ LiquipediaService.interceptors.response.use(response => {
     return response
 })
 
-
-const getUpcomingTournaments = async () => {
+const getUpcomingMatches = async () => {
     const upcomingTournamentRequestCfg = { 
         params: {
             action: "askargs",
@@ -39,6 +38,13 @@ const getUpcomingTournaments = async () => {
     }
 
     const response = await LiquipediaService.get(LIQUIPEDIA_API_URL, upcomingTournamentRequestCfg)
+    
+    response.data.forEach((result) => {
+        result["has tournament name"] = result["has tournament name"][0]
+        result["has map date"] = result["has map date"][0]
+    })
+    
+    console.log(response.data)
 
     return response.data
 }
@@ -50,6 +56,24 @@ const getCurrentDate = () => {
     return currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
 }
 
+const getTournamentDetails = async (tourney) => {
+    const tourneyName = tourney["has tournament name"][0]
+    const tourneyFirstMatchDate = tourney["has map date"][0]
+
+    const tournamentDetailsRequestCfg = {
+        params: {
+            action: "askargs",
+            format: "json",
+            conditions: ""
+        }
+    }
+
+    const response = await LiquipediaService.get(LIQUIPEDIA_API_URL, tournamentDetailsRequestCfg)
+
+    return response.data
+}
+
 module.exports = {
-    getUpcomingTournaments
+    getUpcomingMatches,
+    getTournamentDetails
 }

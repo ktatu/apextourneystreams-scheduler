@@ -1,24 +1,19 @@
-//import { scheduleJob } from "node-schedule"
-//const liquipediaService = require("./services/liquipedia")
 const Tournaments = require("./jobs/Tournaments")
+const JobScheduler = require("./jobs/JobScheduler")
+const LiquipediaService = require("./services/LiquipediaService")
 
-//Tournaments.handleUpcomingTournaments()
-
-const a = () => {
-
-    b(c, ["log this"])
-}
-
-const b = (func, funcArguments) => {
-
-    func(...funcArguments)
-}
-
-const c = (string) => {
-
+const testFunc = (string) => {
     console.log(string)
 }
 
-a()
+LiquipediaService.getUpcomingTournaments()
+
+//Tournaments.handleUpcomingTournaments()
+
+//Tournaments.handleUpcomingTournaments()
+
+const testDate = new Date(1675543500*1000)
+
+console.log(testDate)
 
 // https://liquipedia.net/apexlegends/index.php?title=Special:Ask&#search

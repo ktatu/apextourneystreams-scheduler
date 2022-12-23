@@ -19,7 +19,8 @@ const addFiveMinutes = (cron) => {
 
 const cronStringFromArray = (array) => array.toString().replaceAll(",", " ")
 
-const rawTimestampToCron = (timestamp) => {
+// timestamp format: YYYY-MM-DDTHH:mm:ss.sssZ (ISO 8601)
+const timestampToCron = (timestamp) => {
     
 }
 
