@@ -3,3 +3,4 @@
 19.12 2h get-pyynnön parametrien serialisointi. Ei committia, jäi tekemättä
 21.12 1.5h get-pyynnön jatkoa, refaktorointia
 22.12 0.5h get-pyynnön tulosten käsittelyä
+23.12 1h -||-

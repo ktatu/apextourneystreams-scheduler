@@ -24,4 +24,9 @@ const timestampToCron = (timestamp) => {
     
 }
 
-module.exports = addFiveMinutes
+const timestampToUTC = (timestamp) => new Date(timestamp * 1000)
+
+module.exports = {
+    addFiveMinutes,
+    timestampToUTC
+}

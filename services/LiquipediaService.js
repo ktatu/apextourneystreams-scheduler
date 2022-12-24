@@ -33,7 +33,7 @@ const getUpcomingMatches = async () => {
             format: "json",
             conditions: `has exact time::True|has map date::>${getCurrentDate()}|has tournament name::+`,
             printouts: "has tournament name|has map date",
-            parameters: "limit=5|sort=has tournament name|order=asc"
+            parameters: "limit=10|sort=has map date|order=asc"
         }
     }
 
@@ -43,8 +43,6 @@ const getUpcomingMatches = async () => {
         result["has tournament name"] = result["has tournament name"][0]
         result["has map date"] = result["has map date"][0]
     })
-    
-    console.log(response.data)
 
     return response.data
 }
