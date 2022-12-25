@@ -1,40 +1,48 @@
 const scheduler = require("node-schedule")
-const addFiveMinutes = require("../utils/TimeManipulation")
+const TimeManipulation = require("../utils/TimeManipulation")
 
 const UPCOMING_TOURNAMENTS_JOB_TIME = "0 23 * * 0"
 
-const scheduledTimeSlots = []
+const scheduledTimeslots = []
 
-const timeslotIsBooked = (cronTime) => scheduledTimeSlots.includes(cronTime)
+const timeslotIsBooked = (timestamp) => scheduledTimeslots.includes(timestamp)
 
 // https://en.wikipedia.org/wiki/Cron
 
 const scheduleUpcomingTournamentsJob = (func) => {
     const availableTime = findAvailableTimeSlot(UPCOMING_TOURNAMENTS_JOB_TIME)
 
-    scheduledTimeSlots.push(availableTime)
+    scheduledTimeslots.push(availableTime)
 
-    scheduler.scheduleJob(availableTime, () => {
+    scheduler.scheduleJob(new Date(availableTime), () => {
         func()
     })
 }
 
-const scheduleTournamentDetailsJob = (startTime, func, tourney) => {
-    const time = "cron"
+const scheduleTournamentDetailsJob = (timestamp, func, tourney) => {
+    const hourBeforeTournament = TimeManipulation.removeOneHour(timestamp)
 
-    scheduler.scheduleJob(time, () => {
+    const availableTime = findAvailableTimeSlot(hourBeforeTournament)
+
+    scheduledTimeslots.push(availableTime)
+
+    scheduler.scheduleJob(new Date(availableTime), () => {
         func(tourney)
     })
 }
 
-const findAvailableTimeSlot = (time) => {
-    if (!timeslotIsBooked(time)) {
-        return time
+const findAvailableTimeSlot = (timestamp) => {
+    if (!timeslotIsBooked(timestamp)) {
+        return timestamp
     }
 
-    const nextTimeSlot = addFiveMinutes(time)
+    const nextTimeSlot = TimeManipulation.addFiveMinutes(timestamp)
 
     return findAvailableTimeSlot(nextTimeSlot)
 }
 
-module.exports = { schedule: scheduleUpcomingTournamentsJob }
+module.exports = { 
+    scheduleUpcomingTournamentsJob,
+    scheduleTournamentDetailsJob,
+    findAvailableTimeSlot
+}

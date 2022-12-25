@@ -1,3 +1,4 @@
+/*
 const addFiveMinutes = (cron) => {
     let cronAsArray = cron.split(" ")
 
@@ -16,6 +17,11 @@ const addFiveMinutes = (cron) => {
 
     return cronStringFromArray(cronAsArray)
 }
+*/
+
+const addFiveMinutes = timestamp => timestamp + 300000
+
+const removeOneHour = timestamp => timestamp - 3600000
 
 const cronStringFromArray = (array) => array.toString().replaceAll(",", " ")
 
@@ -26,7 +32,13 @@ const timestampToCron = (timestamp) => {
 
 const timestampToUTC = (timestamp) => new Date(timestamp * 1000)
 
+const UTCFormatToCron = (time) => {
+
+}
+
 module.exports = {
     addFiveMinutes,
-    timestampToUTC
+    removeOneHour,
+    timestampToUTC,
+    UTCFormatToCron
 }

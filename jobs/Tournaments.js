@@ -9,10 +9,10 @@ const handleUpcomingTournaments = async () => {
 
     const upcomingTournamentsMap = filterMatchQueryResults(matchQueryResults)
 
-    console.log(upcomingTournamentsMap)
+    //console.log(upcomingTournamentsMap)
 
     
-    tourneyQueryResults.forEach((tourney) => {
+    upcomingTournamentsMap.forEach((tourney) => {
         //JobScheduler.schedule("tunti ennen turnauksen alkua, tee funktio paikkaan utils/cron_time", handleTournamentDetails, [tourney])
     })
     
@@ -24,7 +24,8 @@ const filterMatchQueryResults = (matchQueryResults) => {
 
     matchQueryResults.forEach((result) => {
         const tourneyName = result["has tournament name"]
-        const startTime = TimeManipulation.timestampToUTC(result["has map date"]["timestamp"])
+        // timestamps received from the Liquipedia api need to be multiplied by 1000 so that new Date(timestamp) works
+        const startTime = parseInt(result["has map date"]["timestamp"]) * 1000
 
         if (tournaments.has(tourneyName)) {
             const savedStartTime = tournaments.get(tourneyName)
