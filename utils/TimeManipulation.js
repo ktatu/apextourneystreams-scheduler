@@ -21,6 +21,8 @@ const addFiveMinutes = (cron) => {
 
 const addFiveMinutes = timestamp => timestamp + 300000
 
+const addOneWeek = timestamp => timestamp + 604800000
+
 const removeOneHour = timestamp => timestamp - 3600000
 
 const cronStringFromArray = (array) => array.toString().replaceAll(",", " ")
@@ -38,6 +40,7 @@ const UTCFormatToCron = (time) => {
 
 module.exports = {
     addFiveMinutes,
+    addOneWeek,
     removeOneHour,
     timestampToUTC,
     UTCFormatToCron

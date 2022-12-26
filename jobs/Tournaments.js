@@ -1,22 +1,25 @@
 const LiquipediaService = require("../services/LiquipediaService")
-const JobScheduler = require("./JobScheduler")
-const TimeManipulation = require("../utils/TimeManipulation")
+const Scheduler = require("./Scheduler")
+//const JobScheduler = require("./JobScheduler")
 
-const DAILY_MATCH_SCAN_TIME = "0 23 * * *"
+const addOneWeek = require("../utils/TimeManipulation").addOneWeek
+const removeOneHour = require("../utils/TimeManipulation").removeOneHour
 
-const handleUpcomingTournaments = async () => {
+const handleUpcomingTourneys = async () => {
     const matchQueryResults = await LiquipediaService.getUpcomingMatches()
 
-    const upcomingTournamentsMap = filterMatchQueryResults(matchQueryResults)
+    const upcomingTourneysMap = filterMatchQueryResults(matchQueryResults)
 
-    //console.log(upcomingTournamentsMap)
-
+    const scheduler = new Scheduler()
     
-    upcomingTournamentsMap.forEach((tourney) => {
-        //JobScheduler.schedule("tunti ennen turnauksen alkua, tee funktio paikkaan utils/cron_time", handleTournamentDetails, [tourney])
+    upcomingTourneysMap.forEach((key) => {
+        const hourBeforeTourneyStart =  removeOneHour(upcomingTourneysMap(key))
+
+        //scheduler.schedule(hourBeforeTourneyStart, () => handleTourneyDetails)
     })
     
-    //JobScheduler.schedule(DAILY_MATCH_SCAN_TIME, handleUpcomingTournaments)
+    scheduler.schedule(Date.now() + addOneWeek, handleUpcomingTourneys)
+    console.log("täällä")
 }
 
 const filterMatchQueryResults = (matchQueryResults) => {
@@ -41,12 +44,12 @@ const filterMatchQueryResults = (matchQueryResults) => {
     return tournaments
 }
 
-const handleTournamentDetails = (tourney) => {
+const handleTourneyDetails = (tourney) => {
 
 }
 
 
 
 module.exports = {
-    handleUpcomingTournaments
+    handleUpcomingTourneys
 }
