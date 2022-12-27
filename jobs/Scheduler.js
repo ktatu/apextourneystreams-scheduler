@@ -1,6 +1,5 @@
 const nodeScheduler = require("node-schedule")
 const addFiveMinutes = require("../utils/TimeManipulation").addFiveMinutes
-const TestImpl = require("./TestImpl")
 
 class Scheduler {
     
@@ -13,11 +12,12 @@ class Scheduler {
     schedule(timestamp, func) {
         const availableTime = this.#findAvailableTimeSlot(timestamp)
 
-        TestImpl.testFunc()
+        this.#scheduledJobTimestamps.add(availableTime)
 
         nodeScheduler.scheduleJob(new Date(availableTime), () => {
             func()
         })
+        
     }
 
 
@@ -28,7 +28,7 @@ class Scheduler {
     
         const nextTimeSlot = addFiveMinutes(timestamp)
     
-        return findAvailableTimeSlot(nextTimeSlot)
+        return this.#findAvailableTimeSlot(nextTimeSlot)
     }
 
     #timestampIsReserved(timestamp) {
