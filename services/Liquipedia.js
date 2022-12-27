@@ -3,7 +3,7 @@ const get = require("lodash.get")
 
 const LIQUIPEDIA_API_URL = "https://liquipedia.net/apexlegends/api.php"
 
-const LiquipediaService = axios.create({
+const LiquipediaClient = axios.create({
     headers: {
         "User-Agent": "ApexTourneyStreams, discord Tatu#0700",
         "Accept-Encoding": "gzip"
@@ -11,7 +11,7 @@ const LiquipediaService = axios.create({
 })
 
 
-LiquipediaService.interceptors.response.use(response => {
+LiquipediaClient.interceptors.response.use(response => {
     const queryResults = response.data.query.results
     const keys = Object.keys(queryResults)
 
@@ -33,11 +33,11 @@ const getUpcomingMatches = async () => {
             format: "json",
             conditions: `has exact time::True|has map date::>${getCurrentDate()}|has tournament name::+`,
             printouts: "has tournament name|has map date",
-            parameters: "limit=10|sort=has map date|order=asc"
+            parameters: "limit=1|sort=has map date|order=asc"
         }
     }
 
-    const response = await LiquipediaService.get(LIQUIPEDIA_API_URL, upcomingTournamentRequestCfg)
+    const response = await LiquipediaClient.get(LIQUIPEDIA_API_URL, upcomingTournamentRequestCfg)
     
     response.data.forEach((result) => {
         result["has tournament name"] = result["has tournament name"][0]
@@ -66,7 +66,7 @@ const getTournamentDetails = async (tourney) => {
         }
     }
 
-    const response = await LiquipediaService.get(LIQUIPEDIA_API_URL, tournamentDetailsRequestCfg)
+    const response = await LiquipediaClient.get(LIQUIPEDIA_API_URL, tournamentDetailsRequestCfg)
 
     return response.data
 }

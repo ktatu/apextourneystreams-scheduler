@@ -20,7 +20,6 @@ class Scheduler {
         
     }
 
-
     #findAvailableTimeSlot(timestamp) {
         if (!this.#timestampIsReserved(timestamp)) {
             return timestamp

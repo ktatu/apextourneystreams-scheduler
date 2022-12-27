@@ -1,25 +1,24 @@
-const LiquipediaService = require("../services/LiquipediaService")
+const LiquipediaClient = require("../services/Liquipedia")
 const Scheduler = require("./Scheduler")
-//const JobScheduler = require("./JobScheduler")
 
 const addOneWeek = require("../utils/TimeManipulation").addOneWeek
 const removeOneHour = require("../utils/TimeManipulation").removeOneHour
 
 const handleUpcomingTourneys = async () => {
-    const matchQueryResults = await LiquipediaService.getUpcomingMatches()
+    const matchQueryResults = await LiquipediaClient.getUpcomingMatches()
 
     const upcomingTourneysMap = filterMatchQueryResults(matchQueryResults)
 
     const scheduler = new Scheduler()
     
-    upcomingTourneysMap.forEach((key) => {
-        const hourBeforeTourneyStart =  removeOneHour(upcomingTourneysMap(key))
-
-        //scheduler.schedule(hourBeforeTourneyStart, () => handleTourneyDetails)
+    upcomingTourneysMap.forEach((key, value) => {
+        console.log("key ", key)
+        console.log("value ", value)
+        //const hourBeforeTourneyStart = removeOneHour(upcomingTourneysMap(tourney))
+        //scheduler.schedule(hourBeforeTourneyStart, () => handleTourneyDetails(tourney))
     })
     
-    scheduler.schedule(Date.now() + addOneWeek, handleUpcomingTourneys)
-    console.log("täällä")
+    //scheduler.schedule(Date.now() + addOneWeek, handleUpcomingTourneys)
 }
 
 const filterMatchQueryResults = (matchQueryResults) => {
@@ -39,17 +38,23 @@ const filterMatchQueryResults = (matchQueryResults) => {
         } else {
             tournaments.set(tourneyName, startTime)
         }
+        //console.log("tourney name ", tourneyName)
     })
 
+    console.log("tournaments ", tournaments)
+    console.log("tournaments map length ", tournaments.size)
     return tournaments
 }
 
-const handleTourneyDetails = (tourney) => {
+const handleTourneyDetails = async (tourney) => {
+    //const tourneyName = 
 
+    //const tourneyQueryResult = await LiquipediaClient.getTournamentDetails(tourney)
 }
 
 
 
 module.exports = {
-    handleUpcomingTourneys
+    handleUpcomingTourneys,
+    handleTourneyDetails
 }
